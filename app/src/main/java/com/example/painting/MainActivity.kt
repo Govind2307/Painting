@@ -40,20 +40,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        view();
+        initView();
 
     }
 
-    private fun view() {
-
-        val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(recycler)
-        val adapter = adapter(context = MainActivity(), menu)
+    private fun initView() {
 
 
 
-        recycler = findViewById(R.id.RecyclerView)
+//        val adapter = adapter(context = MainActivity(), emptyList())
+        recycler = findViewById(R.id.recyclerview)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter(this, menu)
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(recycler)
     }
 }
