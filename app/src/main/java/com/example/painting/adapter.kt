@@ -12,13 +12,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import org.w3c.dom.Text
 
-class adapter(private val context: MainActivity, val menu:List<menu>): RecyclerView.Adapter<adapter.ItemViewHolder>() {
-
-
+class adapter(private val context: MainActivity, val menu: List<abc>) :
+    RecyclerView.Adapter<adapter.ItemViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        val itemView = LayoutInflater.from(context).inflate(R.layout.list_view,parent,false)
+        val itemView = LayoutInflater.from(context).inflate(R.layout.list_view, parent, false)
         return ItemViewHolder(itemView)
     }
 
@@ -31,16 +30,15 @@ class adapter(private val context: MainActivity, val menu:List<menu>): RecyclerV
     }
 
     override fun getItemCount(): Int {
-       return menu.size
+        return menu.size
     }
 
 
-    inner class ItemViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView) {
-        var image:ImageView = itemView.findViewById(R.id.image)
-        var heading:TextView = itemView.findViewById(R.id.heading)
-        var author:TextView = itemView.findViewById(R.id.author)
-        var description:TextView = itemView.findViewById(R.id.description)
-
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var image: ImageView = itemView.findViewById(R.id.image)
+        var heading: TextView = itemView.findViewById(R.id.heading)
+        var author: TextView = itemView.findViewById(R.id.author)
+        var description: TextView = itemView.findViewById(R.id.description)
 
 
     }
