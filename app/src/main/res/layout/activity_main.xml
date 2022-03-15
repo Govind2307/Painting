@@ -15,11 +15,13 @@
         android:paddingLeft="4dp"
         android:text="Home"
         android:textColor="@color/white"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:="@drawable/ic_baseline_search_24"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/RecyclerView"/>
 
 
 </LinearLayout>
