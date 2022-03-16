@@ -2,11 +2,15 @@ package com.example.painting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
 
     lateinit var recycler: RecyclerView
     var menu: List<abc> = listOf(
@@ -42,7 +46,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initView();
 
+
     }
+
+
 
     private fun initView() {
 
