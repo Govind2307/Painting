@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import org.w3c.dom.Text
 
-class adapter(private val context: MainActivity, val menu: List<abc>) :
-    RecyclerView.Adapter<adapter.ItemViewHolder>() {
+class Adapter(private val context: Context, val menu: List<Abc>) :
+    RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
