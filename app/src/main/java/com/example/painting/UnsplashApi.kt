@@ -5,9 +5,9 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface unsplashApi {
+interface UnsplashApi {
 
     @GET("/photos")
-    suspend fun getData(@Query("XSgz-lyCI_peixQ5kIwO5hMVJmBYJvNEigoMU2n1RF")key:String): Response<List<DataItem>>
+    suspend fun getData(@Query("XSgz-lyCI_peixQ5kIwO5hMVJmBYJvNEigoMU2n1RF")key:String ,@Query("page") page: Int): Response<List<DataItem>>
 
 }

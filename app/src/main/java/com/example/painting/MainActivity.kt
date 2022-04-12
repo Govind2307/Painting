@@ -2,58 +2,51 @@ package com.example.painting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.painting.databinding.ActivityMainBinding
+import com.example.painting.datafiles.DataItem
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.IOException
 
+const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-
+    private lateinit var adapter:Adapter
     lateinit var up:ImageButton
     lateinit var recycler: RecyclerView
-    var menu: List<Abc> = listOf(
-        Abc(
-            "https://surface678.com/wp-content/uploads/elementor/thumbs/edited_wake_tech-ovagsl83z9l43ggkcb0jjyd5vo1na0fp5ta32k5qwg.jpg",
-            "Leonardo",
-            "popular",
-            "he medium is commonly applied to the base with a brush, but other implements, such as knives, sponges, and airbrushes, can be used."
-        ),
-        Abc(
-            "https://surface678.com/wp-content/uploads/elementor/thumbs/edited_wake_tech-ovagsl83z9l43ggkcb0jjyd5vo1na0fp5ta32k5qwg.jpg",
-            "Leonardo",
-            "popular",
-            "writer"
-        ),
-        Abc(
-            "https://surface678.com/wp-content/uploads/elementor/thumbs/edited_wake_tech-ovagsl83z9l43ggkcb0jjyd5vo1na0fp5ta32k5qwg.jpg",
-            "Leonardo",
-            "popular",
-            "writer"
-        ),
-        Abc(
-            "https://surface678.com/wp-content/uploads/elementor/thumbs/edited_wake_tech-ovagsl83z9l43ggkcb0jjyd5vo1na0fp5ta32k5qwg.jpg",
-            "Leonardo",
-            "popular",
-            "writer"
-        )
-    )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+
+        lifecycleScope.launchWhenCreated {
+            val response = try {
+                RetrofitInstance.api.getData("XSgz-lyCI_peixQ5kIwO5hMVJmBYJvNEigoMU2n1RF",1)
+            }catch (e: IOException){
+                Log.e(TAG,"IO Exception")
+                return@launchWhenCreated
+            }
+            if (response.isSuccessful && response.body() != null){
+                 (response.body() as MutableList<DataItem>?)!!
+            }else{
+                Log.e(TAG,"Response not successful")
+            }
+        }
 
 
         setSupportActionBar(toolbar)
@@ -66,6 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     }
         initView();
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,14 +76,15 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    fun setupRecyclerView() = binding.recyclerview.apply {
+        adapter = Adapter()
+        adapter= adapter
+        layoutManager = LinearLayoutManager(this@MainActivity)
+
+    }
+
 
     private fun initView() {
-
-
-//        val adapter = adapter(context = MainActivity(), emptyList())
-        recycler = findViewById(R.id.recyclerview)
-        recycler.layoutManager = LinearLayoutManager(this)
-        recycler.adapter = Adapter(this, menu)
 
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
