@@ -17,34 +17,46 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.painting.databinding.ActivityMainBinding
 import com.example.painting.datafiles.DataItem
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.io.IOException
+import java.lang.Exception
 
 const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter:Adapter
-    lateinit var up:ImageButton
-    lateinit var recycler: RecyclerView
+    private  var adapter = Adapter()
+
+    private val abcd = mutableListOf<DataItem>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.recyclerview.adapter=adapter
+        var layoutManager = LinearLayoutManager(this)
+        binding.recyclerview.layoutManager= layoutManager
 
 
 
-        lifecycleScope.launchWhenCreated {
-            val response = try {
-                RetrofitInstance.api.getData("XSgz-lyCI_peixQ5kIwO5hMVJmBYJvNEigoMU2n1RF",1)
-            }catch (e: IOException){
-                Log.e(TAG,"IO Exception")
-                return@launchWhenCreated
-            }
-            if (response.isSuccessful && response.body() != null){
-                 (response.body() as MutableList<DataItem>?)!!
-            }else{
-                Log.e(TAG,"Response not successful")
+        var service:UnsplashApi = UnsplashApi.create()
+        lifecycleScope.launch {
+            try {
+                val response = service.getData("XSgz-lyCI_peixQ5kIwO5hMVJmBYJvNEigoMU2n1RF0",1)
+                if(response.isSuccessful){
+                    response.body()?.let {
+                        val responseBody=response.body()
+                        if(responseBody != null){
+                            abcd.addAll(responseBody)
+                        }
+                        adapter.todos=abcd
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }catch (e:Exception){
+                Log.d(TAG,"Tumse ni hoga")
             }
         }
 
@@ -53,9 +65,8 @@ class MainActivity : AppCompatActivity() {
         toolbar.setNavigationOnClickListener{
             Toast.makeText(this,"Navigation",Toast.LENGTH_LONG).show()
         }
-        up = findViewById(R.id.up)
-        up.setOnClickListener{
-            recycler.smoothScrollToPosition(0)
+        binding.up.setOnClickListener{
+            binding.recyclerview.smoothScrollToPosition(0)
 
     }
         initView();
@@ -86,13 +97,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
 
-        recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                up.isVisible=layoutManager.findLastVisibleItemPosition()!=0
+                binding.up.isVisible=layoutManager.findLastVisibleItemPosition()!=0
             }
         })
         val snapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(recycler)
+        snapHelper.attachToRecyclerView(binding.recyclerview)
     }
 }

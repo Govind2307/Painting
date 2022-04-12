@@ -21,7 +21,7 @@ class Adapter: RecyclerView.Adapter<Adapter.ItemViewHolder>() {
 
     inner class ItemViewHolder(val binding: ListViewBinding) :RecyclerView.ViewHolder(binding.root)
 
-    private val diffCallback = object : DiffUtil.ItemCallback<DataItem>() {
+   /* private val diffCallback = object : DiffUtil.ItemCallback<DataItem>() {
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return oldItem.id == newItem.id
         }
@@ -29,13 +29,10 @@ class Adapter: RecyclerView.Adapter<Adapter.ItemViewHolder>() {
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
             return oldItem == newItem
         }
-    }
+    }*/
 
-    private val differ = AsyncListDiffer(this, diffCallback)
-    var todos: MutableList<DataItem>
-        get() = differ.currentList
-        set(value) { differ.submitList(value) }
 
+    var todos: List<DataItem> = emptyList<DataItem>()
     override fun getItemCount() = todos.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -59,7 +56,4 @@ class Adapter: RecyclerView.Adapter<Adapter.ItemViewHolder>() {
                 .into(image)
         }
     }
-
-
-
 }
