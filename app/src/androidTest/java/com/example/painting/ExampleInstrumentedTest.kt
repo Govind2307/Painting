@@ -22,3 +22,4 @@ class ExampleInstrumentedTest {
         assertEquals("com.example.painting", appContext.packageName)
     }
 }
+idk what will this do
